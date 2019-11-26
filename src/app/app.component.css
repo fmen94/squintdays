@@ -1,0 +1,68 @@
+.dropTable{
+    width: auto;
+    text-align: center;
+    margin: auto;
+    background-color: Gainsboro  ;
+    border-radius: 10px;
+    margin-bottom: 1%;
+}
+form{
+    width: 90%;
+    margin-top: 2%;
+    margin-left: 5%;
+    background-color: Gainsboro  ;
+    border-radius: 10px;
+    padding-left: 10%;
+    padding-top: 1% ;
+    padding-bottom: 1%;
+}
+
+.withtable{
+    margin-top: 2%;
+}
+.thead-dark{
+    width: 100%;
+}
+
+select{
+    width: 50%;
+
+}
+.form-control{
+    width: auto !important;
+}
+#myChart{
+    display:block;
+    margin:auto;
+}
+@media screen and (max-width: 600px) {
+    table {
+        width:100%;
+    }
+    thead {
+        display: none;
+    }
+    tr:nth-of-type(2n) {
+        background-color: inherit;
+    }
+    tr td:first-child {
+        background: #f0f0f0;
+        font-weight:bold;
+        font-size:1.3em;
+    }
+    tbody td {
+        display: block;
+        text-align:center;
+    }
+    tbody td:before {
+        content: attr(data-th);
+        display: block;
+        text-align:center;
+    }
+}
+@media screen and (max-width: 320px) {
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+}
