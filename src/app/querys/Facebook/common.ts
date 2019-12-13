@@ -9,10 +9,10 @@ query{
     pulse{
       facebook{
          common{
-          sentiment(dateStartEnd:{start:"${start}",end:"${end}"}){
+          sentiment(dateStartEnd:{start: "${start}", end:"${end}"}){
             date
-            bad
             good
+            bad
             neutral
           }
           engagedUser(limit:${limit} period: ${period}){

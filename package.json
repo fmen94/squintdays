@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku":" ng build && cd ../fechasback && git add . && git commit -m 'stories' && git push heroku master",
+    "deploy": "ng build && scp -i '~/code/fechas/fechasKeyPair.pem' -r dist/* bitnami@3.83.233.97:/home/bitnami/htdocs/ "
   },
   "private": true,
   "dependencies": {

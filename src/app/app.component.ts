@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
-import { common } from './querys/common';
+import { Component } from '@angular/core';
 import { transGraph } from './transformations/comonGraph.transformations';
-import { community } from './querys/community';
-import { investment } from './querys/investmet';
-import { affinity } from './querys/affinty';
-import { conversation } from './querys/conversation';
 import * as Chart from 'chart.js'
+import { comparator } from './transformations/comparatorDays';
+import { comparatorActualy } from './transformations/comparatorDaysActualy';
+import { comparatorProm } from './transformations/comparatorDaysProm';
+import { GraphService } from './services/graph.service'
+import { countryGraph } from './transformations/countryGraph.transformations';
 
 
 @Component({
@@ -15,36 +13,57 @@ import * as Chart from 'chart.js'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  {
-  limit:number = 7
+export class AppComponent   {
+  //Basic
+  limit:number = 15
   period: string = "DL"
   idFace:string = "534334316747920"
+  //Data
   days: any;
-  commons: any[];
-  community: any[];
-  Data: any[]
-  investment: any[]
+  Data: any;
+  general: any;
+  post: any;
+  //Teble
   objectKeys = Object.keys;
-  affinity: any[];
-  conversation: any[];
+  
+  //Bench
+  benchData: number ;
+  benchDataActyaly: number ;
+  benchDataProm: number ;
 
+  //validations
+  isCommon =true
+  activeButun='general'
   //chart
   canvas: any;
   ctx: any;
   charDate: any[];
   charData: any[]; 
   charTitle: any[];
-  constructor(
-    private apollo: Apollo
-  ){}
+  myChart:any
 
-   getChart(i) {
+  constructor(
+    private graphService: GraphService,
+  ){}
+  isPost(e){
+    if(!e){return false}
+    if(typeof e=="object"){
+      return true
+    }
+    else return false
+  }
+
+   getChart(i=4) {
+     this.myChart? this.myChart.destroy() : this.myChart
+     this.benchDataActyaly=comparatorActualy(this.Data[i],this.days)
+    this.benchData=comparator(this.Data[i],this.days)
+    this.benchDataProm = comparatorProm(this.Data[i],this.days)
     let days = [...this.days]
     days.shift()
     const data = [...this.Data[i]]
     this.canvas = document.getElementById('myChart');
     this.ctx = this.canvas.getContext('2d');
-    let myChart = new Chart(this.ctx,  {
+    this.myChart = new Chart(this.ctx,  {
       type: 'line',
       data: {
 				labels: days,
@@ -62,46 +81,36 @@ export class AppComponent  {
       }
     });
   }
-
+  
+ getLocaton(location){
+   this.activeButun= location
+   this.Data=[]
+    this.graphService.getLocation(this.period,this.idFace,location).then(e=>{
+      if(e.length==0){return}
+    this.Data = countryGraph(e,this.limit,this.period);
+    this.days= this.Data.shift() 
+    this.isCommon=false
+    this.getChart()
+    })
+  }
   trasnsfomData(){
-    this.Data =transGraph(Object.assign(this.commons,this.community,this.investment,this.affinity, this.conversation),this.limit)
-    this.days= this.Data[0]
-    this.Data.shift() 
-    this.getChart(4)
+    this.activeButun= "general"
+    this.Data=[]
+    this.graphService.getData(this.limit,this.period,this.idFace).then(e=>{
+      this.Data = transGraph(e[0],this.limit,this.period)
+     this.days= this.Data.shift() 
+     this.post = this.Data.pop()
+     this.general= e[1].data.pulse.facebook
+     this.getChart()
+    
+    })
+    
   }
   update(){
-    this.getData()
-  }
-  async getData(){
-    await this.apollo.query({query: gql`${common(this.limit,this.period)}`,context:{  headers: {"idface": `${this.idFace}`} }})
-    .subscribe( res  => {
-      let result:any = res
-       this.commons = result.data.pulse.facebook.common
-       this.trasnsfomData()
-    });
-    await this.apollo.query({query: gql`${community(this.limit,this.period)}`,context:{  headers: {"idface": `${this.idFace}`} }})
-    .subscribe( res  => {
-      let result: any = res
-      this.community = result.data.pulse.facebook.community
-    });
-    await this.apollo.query({query: gql`${investment(this.limit,this.period)}`,context:{  headers: {"idface": `${this.idFace}`} }})
-    .subscribe( res  => {
-      let result: any = res
-      this.investment = result.data.pulse.facebook.investmentReturn
-    });
-    await this.apollo.query({query: gql`${affinity(this.limit,this.period)}`,context:{  headers: {"idface": `${this.idFace}`} }})
-    .subscribe( res  => {
-      let result: any = res
-      this.affinity = result.data.pulse.facebook.affinity
-      
-    });
-    await this.apollo.query({query: gql`${conversation(this.limit,this.period)}`,context:{  headers: {"idface": `${this.idFace}`} }})
-    .subscribe( res  => {
-      let result: any = res
-      this.conversation = result.data.pulse.facebook.conversation
-    });
+   this.graphService.renovateConection()
+    this.trasnsfomData()
   }
   ngOnInit(){
-    this.getData()
+    this.trasnsfomData()
   }
 }

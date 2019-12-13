@@ -2,7 +2,7 @@
     width: auto;
     text-align: center;
     margin: auto;
-    background-color: Gainsboro  ;
+    background-color: white  ;
     border-radius: 10px;
     margin-bottom: 1%;
 }
@@ -10,7 +10,7 @@ form{
     width: 90%;
     margin-top: 2%;
     margin-left: 5%;
-    background-color: Gainsboro  ;
+    background-color: white  ;
     border-radius: 10px;
     padding-left: 10%;
     padding-top: 1% ;
@@ -23,10 +23,14 @@ form{
 .thead-dark{
     width: 100%;
 }
-
+.red{
+    color: red;
+}
+.table{
+    margin-top: 20px;
+}
 select{
     width: 50%;
-
 }
 .form-control{
     width: auto !important;
@@ -34,6 +38,18 @@ select{
 #myChart{
     display:block;
     margin:auto;
+}
+.bench{
+    display:block;
+    margin:auto;
+}
+.post{
+    min-width: 200px !important;
+    background-color: blue;
+}
+.general{
+    margin: auto;
+    margin-top: 50px;
 }
 @media screen and (max-width: 600px) {
     table {

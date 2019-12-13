@@ -9,7 +9,11 @@ query{
   pulse{
     facebook{
        affinity{
-        shares{
+        shares(limit:${limit} period: ${period}){
+          date
+          value
+        }
+        stories(limit:${limit} period: ${period}){
           date
           value
         }
