@@ -1,10 +1,10 @@
 
-export const locationQuery =(period="DL",location="country" )=>{
+export const locationQuery =(period="DL",location="country",socialNetwork= "F" )=>{
 
 return`
 query{
   audit{
-    facebook{
+    ${socialNetwork}{
       ${location}(period:${period}){
         name
         date

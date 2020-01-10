@@ -1,13 +1,10 @@
-import * as moment from 'moment';
 
 export const content =(limit=7,period="DL")=>{
-let end =moment().format('MM/DD/YYYY')
-let start = moment().subtract(limit,'days').format("MM/DD/YYYY")
 
 return`
 query {
   pulse {
-    facebook {
+    instagram {
       content {
         post (limit: 50){
           date

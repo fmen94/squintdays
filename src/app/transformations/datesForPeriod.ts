@@ -8,7 +8,8 @@ export const datesForPeriod =(period,limit)=>{
     if(period == 'DL'){
         end = moment().format("MM/DD/YYYY")
         start = moment().subtract(limit,'days')
-        while (start.format("MM/DD/YYYY") <= end) {
+        while (new Date(start.format("MM/DD/YYYY")) <= new Date(end)) {
+          
             days.push(start.format("MM/DD/YYYY"))
             start = start.add(1, 'days')
         }
@@ -16,7 +17,7 @@ export const datesForPeriod =(period,limit)=>{
     else if(period == 'MT') {
         end = moment()
         start=moment().subtract(limit,"months").date(1)
-         while (start <=  end) {
+         while (new Date(start) <=  new Date(end)) {
              days.push(start.format("MM/DD/YYYY"))
              start = start.add(1, 'months')
              
@@ -27,7 +28,7 @@ export const datesForPeriod =(period,limit)=>{
         start= moment().subtract(limit,"quarters").date(1)
         end = moment()
      
-         while (start <=  end) {
+         while (new Date(start) <=  new Date(end)) {
              days.push(start.format("MM/DD/YYYY"))
              start = start.add(1, 'quarters')
                 
@@ -38,7 +39,7 @@ export const datesForPeriod =(period,limit)=>{
         start= moment().subtract(limit,"weeks").weekday(1)
         end = moment()
      
-         while (start <=  end) {
+         while (new Date(start) <=  new Date(end)) {
              days.push(start.format("MM/DD/YYYY"))
              start = start.add(1, 'weeks')
                 
@@ -49,7 +50,7 @@ export const datesForPeriod =(period,limit)=>{
         start= moment().subtract(limit,"years").date(1).month(0)
         end = moment()
      
-         while (start <=  end) {
+         while (new Date(start) <=  new Date(end)) {
              days.push(start.format("MM/DD/YYYY"))
              start = start.add(1, 'years')
                 

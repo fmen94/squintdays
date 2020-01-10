@@ -11,7 +11,7 @@ export const countryGraph = (data, limit = 7, period = "DL") => {
     empty.push(null)
        
    }
-    result =data.reduce((arr,e)=>{
+    result =data.reduce((arr,e)=>{    
         let index = days.findIndex(el=>el==moment(e.date.substr(0,10)).format("MM/DD/YYYY"))
         let newIndex = arr.findIndex(el=>el[0]==(e.name.charAt(0).toUpperCase() + e.name.slice(1,40)).replace("https://",""))
         if(index>=0 && newIndex>=0){
@@ -21,8 +21,12 @@ export const countryGraph = (data, limit = 7, period = "DL") => {
             arr.push([(e.name.charAt(0).toUpperCase() + e.name.slice(1,40)).replace("https://",""),...empty])
             arr[arr.length-1][index]=e.value
         }
+        else if (newIndex==-1){
+            arr.push([(e.name.charAt(0).toUpperCase() + e.name.slice(1,40)).replace("https://",""),...empty])
+        }
+        
         return arr
     },[])
-    result.unshift(days)
+    result.unshift(days)    
 return result
 }

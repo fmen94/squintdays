@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import { common } from '../querys/Facebook/common';
-import { community } from '../querys/Facebook/community';
-import { affinity } from '../querys/Facebook/affinty';
-import { content } from '../querys/Facebook/content';
-import { investment } from '../querys/Facebook/investmet';
-import { conversation } from '../querys/Facebook/conversation';
+import { common } from '../../querys/Facebook/common';
+import { community } from '../../querys/Facebook/community';
+import { affinity } from '../../querys/Facebook/affinty';
+import { content } from '../../querys/Facebook/content';
+import { investment } from '../../querys/Facebook/investmet';
+import { conversation } from '../../querys/Facebook/conversation';
 import { HttpLink } from "apollo-angular-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { general } from '../querys/Facebook/general';
-import { locationQuery } from '../querys/Facebook/location';
+import { general } from '../../querys/Facebook/general';
+import { locationQuery } from '../../querys/Facebook/location';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class GraphService {
+export class GraphServiceFace {
 
   constructor(
     private apollo: Apollo,
@@ -42,10 +42,12 @@ export class GraphService {
       ),result[6],result[5]]
    })
  }
- getLocation(period,idFace,location){
-   let a = this.apollo.query({query: gql`${locationQuery(period,location)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   return Promise.all([a]).then((result: any[])=>{
-    return result[0].data.audit.facebook[location]
+ getLocation(period,idFace,location,socialNetwork){
+  if(socialNetwork=='F'){socialNetwork="facebook"}
+else if(socialNetwork=='I'){socialNetwork="instagram"}
+   let a = this.apollo.query({query: gql`${locationQuery(period,location,socialNetwork)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+   return Promise.all([a]).then((result: any[])=>{   
+    return result[0].data.audit[socialNetwork][location]
    })
  }
  renovateConection(){

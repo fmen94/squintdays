@@ -5,22 +5,22 @@
 
       <div class="col">
         <label for="inputCanal">Página</label>
-        <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="idFace" name="idFace">
-          <option value="534334316747920">HillsPetMX</option>
-          <option value="264954487761424">Teamknowlogy</option>
-          <option value="147705395260558">BancoAzteca</option>
+        <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="brand" name="brand">
+          <option value="0">HillsPetMX</option>
+          <option value="1">Teamknowlogy</option>
+          <option value="2">BancoAzteca</option>
         </select>
       </div>
       <div class="col">
-        <label for="inputCanal">Red</label>
-        <select class="form-control" id="inputCanal">
-          <option value="FB">Facebook</option>
-          <option value="IG">Instagram</option>
+        <label for="inputchanel">Red</label>
+        <select class="form-control" id="inputchanel" (change)="getChanel()" [(ngModel)]="chanel" name="chanel">
+          <option value="F">Facebook</option>
+          <option value="I">Instagram</option>
         </select>
       </div>
       <div class="col">
         <label for="inputEmail4">Dias</label>
-        <select class="form-control" id="inputEmail4" [(ngModel)]="limit" name="limit" (change)="trasnsfomData()">
+        <select class="form-control" id="inputEmail4" [(ngModel)]="limit" name="limit" (change)="getChanel()">
           <option *ngIf="period!= 'DL'" value=2>2</option>
           <option *ngIf="period== 'MT'" value=6>6</option>
           <option *ngIf="period== 'MT'" value=12>12</option>
@@ -34,8 +34,7 @@
 
       <div class="col">
         <label for="inputPassword4">Periodo</label>
-        <select class="form-control" id="inputPassword4" [(ngModel)]="period" name="period"
-          (change)="trasnsfomData(); limit= 2">
+        <select class="form-control" id="inputPassword4" [(ngModel)]="period" name="period" (change)="getChanel(); limit= 2">
           <option selected value="DL">Diario</option>
           <option value="Wk">Semanal</option>
           <option value="MT">Mensual</option>
@@ -83,8 +82,7 @@
     <button type="button" class="btn btn-secondary" (click)="getLocaton('country')" [ngClass]="{'active': activeButun=='country'}"  >Country</button>
     <button type="button" class="btn btn-secondary" (click)="getLocaton('city')" [ngClass]="{'active': activeButun=='city'}" >City</button>
     <button type="button" class="btn btn-secondary" (click)="getLocaton('gender')" [ngClass]="{'active': activeButun=='gender'}" >Gender Age</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')" [ngClass]="{'active': activeButun=='sourse'}" >Sourse</button>
-    
+      <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')" [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='F'" >Sourse</button>
   </div>
     <div class="withtable bench">
       <table class="table table-hover dropTable" *ngIf="Data">

@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GraphService } from './graph.service';
+import { GraphServiceFace } from './graph.serviceFacebook';
 
 describe('GraphService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GraphService = TestBed.get(GraphService);
+    const service: GraphServiceFace = TestBed.get(GraphServiceFace);
     expect(service).toBeTruthy();
   });
 });
