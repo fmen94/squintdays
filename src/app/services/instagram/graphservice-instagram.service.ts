@@ -2,13 +2,13 @@
 import { Injectable } from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import { common } from "../../querys/intagram/common"
-import { community } from "../../querys/intagram/community"
-import { investment } from "../../querys/intagram/investment"
-import { affinity } from "../../querys/intagram/affinity"
-import { conversation } from "../../querys/intagram/conversation"
-import { content } from "../../querys/intagram/content"
-import { general } from '../../querys/intagram/general';
+import { common } from "../../querys/Instagram/common"
+import { community } from "../../querys/Instagram/community"
+import { investment } from "../../querys/Instagram/investment"
+import { affinity } from "../../querys/Instagram/affinity"
+import { conversation } from "../../querys/Instagram/conversation"
+import { content } from "../../querys/Instagram/content"
+import { general } from '../../querys/Instagram/general';
 
 @Injectable({
   providedIn: 'root'

@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import {HttpModule} from '@angular/http'
 import { ApolloModule, APOLLO_OPTIONS } from "apollo-angular";
 import { HttpLinkModule, HttpLink } from "apollo-angular-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -24,6 +25,7 @@ const authLink = setContext((_, { headers }) => {
     AppComponent
   ],
   imports: [
+    HttpModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,

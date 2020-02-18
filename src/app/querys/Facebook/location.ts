@@ -1,5 +1,5 @@
 
-export const locationQuery =(period="DL",location="country",socialNetwork= "F" )=>{
+export const locationQuery =(period="DL",location="country",socialNetwork= "FB" )=>{
 
 return`
 query{

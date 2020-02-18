@@ -11,7 +11,8 @@ import { HttpLink } from "apollo-angular-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { general } from '../../querys/Facebook/general';
 import { locationQuery } from '../../querys/Facebook/location';
-
+import { user } from 'src/app/querys/Facebook/users';
+import {Http} from '@angular/http'
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class GraphServiceFace {
 
   constructor(
     private apollo: Apollo,
-    private httpLink: HttpLink
+    private httpLink: HttpLink,
+    private http: Http
   ) { }
 
  getData(limit,period,idFace){
@@ -43,8 +45,8 @@ export class GraphServiceFace {
    })
  }
  getLocation(period,idFace,location,socialNetwork){
-  if(socialNetwork=='F'){socialNetwork="facebook"}
-else if(socialNetwork=='I'){socialNetwork="instagram"}
+  if(socialNetwork=='FB'){socialNetwork="facebook"}
+else if(socialNetwork=='IG'){socialNetwork="instagram"}
    let a = this.apollo.query({query: gql`${locationQuery(period,location,socialNetwork)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
    return Promise.all([a]).then((result: any[])=>{   
     return result[0].data.audit[socialNetwork][location]
@@ -59,8 +61,19 @@ else if(socialNetwork=='I'){socialNetwork="instagram"}
     })
   })
 }
+async getUsers(network){
+  let users
+  await this.apollo.query({query: gql`${user(network)}`}).toPromise()
+  .then(e=>{
+    users= e
+  })
+  return users
+}
 
-
-
+getTokeRef(code){
+  let url = `http://localhost:3000/api/v1/refreshToken?code=${code}`
+  return this.http.get(url)
+}
+  
 
 }

@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "heroku": " ng build && cd ../fechasback && git add . && git commit -m 'stories' && git push heroku master",
-    "deploy": "ng build && scp -i '~/code/fechas/fechasKeyPair.pem' -r dist/* bitnami@3.83.233.97:/home/bitnami/htdocs/ "
+    "deploy": "ng build && scp -i '~/code/front/fechas/fechasKeyPair.pem' -r dist/* bitnami@3.83.233.97:/home/bitnami/htdocs/ "
   },
   "private": true,
   "dependencies": {
@@ -18,9 +18,11 @@
     "@angular/compiler": "~8.2.8",
     "@angular/core": "~8.2.8",
     "@angular/forms": "~8.2.8",
+    "@angular/http": "^7.2.16",
     "@angular/platform-browser": "~8.2.8",
     "@angular/platform-browser-dynamic": "~8.2.8",
     "@angular/router": "~8.2.8",
+    "angularx-social-login": "^2.2.1",
     "apollo-angular": "^1.8.0",
     "apollo-angular-link-http": "^1.9.0",
     "apollo-boost": "^0.4.4",

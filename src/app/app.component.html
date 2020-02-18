@@ -2,24 +2,23 @@
   <form>
 
     <div class="form-row">
-
-      <div class="col">
-        <label for="inputCanal">Página</label>
-        <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="brand" name="brand">
-          <option value="0">HillsPetMX</option>
-          <option value="1">Teamknowlogy</option>
-          <option value="2">BancoAzteca</option>
-        </select>
-      </div>
       <div class="col">
         <label for="inputchanel">Red</label>
-        <select class="form-control" id="inputchanel" (change)="getChanel()" [(ngModel)]="chanel" name="chanel">
-          <option value="F">Facebook</option>
-          <option value="I">Instagram</option>
+        <select class="form-control" id="inputchanel" (change)="getUsers()" [(ngModel)]="chanel" name="chanel">
+          <option value="FB">Facebook</option>
+          <option value="IG">Instagram</option>
+          <option value="YT">Youtube</option>
         </select>
       </div>
       <div class="col">
-        <label for="inputEmail4">Dias</label>
+        <label for="inputCanal">Página</label>
+        <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="page_id" name="page_id">
+          <option *ngFor="let e of users" [value]="e.kind">{{e.name || e.value}}</option>
+        </select>
+      </div>
+      
+      <div class="col">
+        <label for="inputEmail4">Columnas</label>
         <select class="form-control" id="inputEmail4" [(ngModel)]="limit" name="limit" (change)="getChanel()">
           <option *ngIf="period!= 'DL'" value=2>2</option>
           <option *ngIf="period== 'MT'" value=6>6</option>
@@ -29,8 +28,6 @@
           <option *ngIf="period== 'DL'" value=30>30</option>
         </select>
       </div>
-
-
 
       <div class="col">
         <label for="inputPassword4">Periodo</label>
@@ -44,13 +41,15 @@
       </div>
     </div>
   </form>
+ 
   <div class="form-row">
     <div class="col" *ngIf="general">
-      <div class="card general" style="width: 10rem;">
-        <img [src]="general.general.logo.value" class="card-img-top" alt="...">
+      <div class="card general" style="width: 12rem;">
+        <img [src]="general.general.logo.value? general.general.logo.value : '../assets/SinNombre.png'" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{general.title}}</h5>
-          <p class="card-text">{{general.nick}}</p>
+          <h5 class="card-title">{{general.title || "Sin Título"}}</h5>
+          <p class="card-text">{{general.nick || "Sin Nick"}}</p>
+          <p class="card-text">Categoria: {{general.category}}</p>
         </div>
       </div>
 
@@ -64,12 +63,12 @@
           <h5 class="card-title">{{benchData}}% 1w vs 1w </h5>
         </div>
       </div>
-      <div class="card bench" style="width: 18rem;" *ngIf="benchData && limit==15">
+      <div class="card bench" style="width: 18rem;" *ngIf="benchDataActyaly && limit==15">
         <div class="card-body">
           <h5 class="card-title">{{benchDataActyaly}}% 1d vs 1d</h5>
         </div>
       </div>
-      <div class="card bench" style="width: 18rem;" *ngIf="benchData && limit==15">
+      <div class="card bench" style="width: 18rem;" *ngIf="benchDataProm && limit==15">
         <div class="card-body">
           <h5 class="card-title">{{benchDataProm}}% 1w/7 vs 1w/7</h5>
         </div>
@@ -77,12 +76,12 @@
     </div>
   </div>
 
-  <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-secondary" [ngClass]="{'active': activeButun=='general'}" (click)="trasnsfomData()">General</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('country')" [ngClass]="{'active': activeButun=='country'}"  >Country</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('city')" [ngClass]="{'active': activeButun=='city'}" >City</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('gender')" [ngClass]="{'active': activeButun=='gender'}" >Gender Age</button>
-      <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')" [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='F'" >Sourse</button>
+  <div class="btn-group botonsDesc" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" [ngClass]="{'active': activeButun=='general'}" (click)="trasnsfomData()" *ngIf="chanel" >General</button>
+    <button type="button" class="btn btn-secondary" (click)="getLocaton('country')" [ngClass]="{'active': activeButun=='country'}" *ngIf="chanel!='YT'" >Country</button>
+    <button type="button" class="btn btn-secondary" (click)="getLocaton('city')" [ngClass]="{'active': activeButun=='city'}" *ngIf="chanel!='YT'"  >City</button>
+    <button type="button" class="btn btn-secondary" (click)="getLocaton('gender')" [ngClass]="{'active': activeButun=='gender'}" *ngIf="chanel!='YT'" >Gender Age</button>
+      <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')" [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='FB'" >Source</button>
   </div>
     <div class="withtable bench">
       <table class="table table-hover dropTable" *ngIf="Data">
@@ -94,22 +93,27 @@
         <tbody>
           <tr *ngFor="let e of Data; let i = index">
             <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null }" >
-               {{ e[key] != null ? e[key]  : 'Null' }} 
+              {{getDefault(i,e[key])}}
+               <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
             </td>  
           </tr>
           <tr *ngIf="isCommon">
             <td *ngFor="let e of post">
-                <div class="card" style="width: 18rem;" *ngIf="isPost(e)">
-                    <img [src]="e.media.value" class="card-img-top" alt="Sin imagen para mostrar">
+                <div class="card" style="width: 15rem;" *ngIf="isPost(e)">
+                  <iframe *ngIf="e.url" width="238" height="150" [src]="getFrime(e)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img *ngIf="!e.url" [src]="e.media.value" class="card-img-top" alt="Sin imagen para mostrar">
                     <div class="card-body">
                       <p class="card-text">{{e.text}}</p>
                     </div>
                   </div>
                   <p *ngIf="!isPost(e)" >{{ e }}</p>
-                  <img *ngIf="!e" src="../assets/SinNombre.png" alt="" style="width: 18rem;" >
+                  <img *ngIf="!e" src="../assets/SinNombre.png" alt="" style="width: 12rem;" >
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <img *ngIf="loading" class="load" src="../assets/load.gif" alt="" style="width: 40rem;" >
+    <a type="button" class="btn btn-danger " href="https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyt-analytics.readonly%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.force-ssl%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fadwords%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutubepartner-channel-audit%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutubepartner%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly&prompt=consent&response_type=code&client_id=751076858960-ldeh9o7pemuel2oq26i4q9vocur8l0v8.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A4200"  >Dar permisos de GOOGLE</a>
+
 </router-outlet>

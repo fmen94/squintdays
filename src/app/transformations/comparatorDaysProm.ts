@@ -18,10 +18,10 @@ export const comparatorProm = (array: any[],days)=>{
     data.shift()
     dates.shift()
     dates.map((el,index)=>{
-        if(el>=monday&&el!=null){
+        if(new Date(el) >=new Date(monday)&&el!=null){
             actualy+=data[index]
         }
-        if(el>=lastMonday&& el<=lastNumDay&&el!=null){
+        else if(new Date(el)>=new Date(lastMonday) && new Date(el)<=new Date(lastNumDay)&&el!=null){
             prev+= data[index]
         }
         if(index==data.length-1){
@@ -29,5 +29,5 @@ export const comparatorProm = (array: any[],days)=>{
             actualy = actualy/7
         }
     })
-    return parseFloat((((actualy*100)/prev)-100).toFixed(2))
+    return prev>0 && actualy>0? parseFloat((((actualy*100)/prev)-100).toFixed(2)) : null
 }
