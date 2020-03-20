@@ -115,21 +115,25 @@ export class AppComponent   {
   trasnsfomData(){
     this.activeButun= "general"
     this.clearData()
-    this.graphService.getData(this.limit,this.period,this.page_id).then(e=>{
-     this.loading= false
-     this.Data = transGraph(e[0],this.limit,this.period)
-     this.days= this.Data.shift() 
-     this.post = this.Data.pop()  
-     this.general= e[1].data.pulse.facebook
-     this.general.category = this.brand? this.brand.category : "PET_SUPPLIES"
-     this.getChart()
-    })
+    this.graphService.getData(this.limit,this.period,this.page_id)
+    .subscribe(e=>{
+      e=this.graphService.transformSuscription(e)
+      this.loading= false
+      this.Data = transGraph(e[0],this.limit,this.period)
+      this.days= this.Data.shift() 
+      this.post = this.Data.pop()  
+      this.general= e[1].data.pulse.facebook
+      this.general.category = this.brand? this.brand.category : "PET_SUPPLIES"
+      this.getChart()
+    }).closed
     
   }
   trasnsfomDataInsta(){
     this.activeButun= "general"
     this.clearData()
-    this.graphInsta.getData(this.limit,this.period,this.brand.value).then(e=>{
+    this.graphInsta.getData(this.limit,this.period,this.brand.value)
+    .subscribe(e=>{
+      e=this.graphInsta.transformSuscription(e)
      this.loading= false
      this.Data = transGraph(e[0],this.limit,this.period)
      this.days= this.Data.shift() 
@@ -137,7 +141,8 @@ export class AppComponent   {
      this.general= e[1].data.pulse.instagram
      this.general.category = this.brand.category
      this.getChart()
-    })
+      
+    }).closed
   }
   trasnsfomDataYt(){
     this.activeButun= "general"

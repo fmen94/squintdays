@@ -13,6 +13,7 @@ import { general } from '../../querys/Facebook/general';
 import { locationQuery } from '../../querys/Facebook/location';
 import { user } from 'src/app/querys/Facebook/users';
 import {Http} from '@angular/http'
+import { forkJoin } from 'rxjs';
 
 
 @Injectable({
@@ -26,24 +27,44 @@ export class GraphServiceFace {
     private http: Http
   ) { }
 
+//  getData(limit,period,idFace){
+//     let a = this.apollo.query({query: gql`${common(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let b = this.apollo.query({query: gql`${community(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let c = this.apollo.query({query: gql`${investment(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let d = this.apollo.query({query: gql`${affinity(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let e = this.apollo.query({query: gql`${conversation(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let f = this.apollo.query({query: gql`${content(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//    let g= this.apollo.query({query: gql`${general()}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
+//   return Promise.all([a,b,c,d,e,f,g]).then((result: any[])=>{
+//      return [ Object.assign( result[0].data.pulse.facebook.common,
+//       result[1].data.pulse.facebook.community,
+//       result[2].data.pulse.facebook.investmentReturn,
+//       result[3].data.pulse.facebook.affinity,
+//       result[4].data.pulse.facebook.conversation,
+//       result[5].data.pulse.facebook.content
+//       ),result[6],result[5]]
+//    })
+//  }
  getData(limit,period,idFace){
-    let a = this.apollo.query({query: gql`${common(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let b = this.apollo.query({query: gql`${community(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let c = this.apollo.query({query: gql`${investment(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let d = this.apollo.query({query: gql`${affinity(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let e = this.apollo.query({query: gql`${conversation(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let f = this.apollo.query({query: gql`${content(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-   let g= this.apollo.query({query: gql`${general()}`,context:{  headers: {"idface": `${idFace}`} }}).toPromise()
-  return Promise.all([a,b,c,d,e,f,g]).then((result: any[])=>{
-     return [ Object.assign( result[0].data.pulse.facebook.common,
-      result[1].data.pulse.facebook.community,
-      result[2].data.pulse.facebook.investmentReturn,
-      result[3].data.pulse.facebook.affinity,
-      result[4].data.pulse.facebook.conversation,
-      result[5].data.pulse.facebook.content
-      ),result[6],result[5]]
-   })
- }
+  return forkJoin(
+    this.apollo.query({query: gql`${common(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${community(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${investment(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${affinity(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${conversation(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${content(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
+    this.apollo.query({query: gql`${general()}`,context:{  headers: {"idface": `${idFace}`} }})
+  )
+}
+transformSuscription(result){
+  return [ Object.assign( result[0].data.pulse.facebook.common,
+    result[1].data.pulse.facebook.community,
+    result[2].data.pulse.facebook.investmentReturn,
+    result[3].data.pulse.facebook.affinity,
+    result[4].data.pulse.facebook.conversation,
+    result[5].data.pulse.facebook.content
+    ),result[6],result[5]]
+}
  getLocation(period,idFace,location,socialNetwork){
   if(socialNetwork=='FB'){socialNetwork="facebook"}
 else if(socialNetwork=='IG'){socialNetwork="instagram"}
