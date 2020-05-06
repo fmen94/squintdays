@@ -181,16 +181,9 @@ myChart:any
     .subscribe(e=>{
       e=this.graphServiceNews.transformSuscription(e)
       this.loading= false
-      console.log("llegada");
-      
-      console.log(e);
-      
       this.Data = transGraph(e[0],this.limit,this.period)
-      console.log("salida");
       this.days= this.Data.shift() 
       this.post = this.Data.pop()  
-      console.log(this.post);
-      
       this.general= null
     }).closed
     
