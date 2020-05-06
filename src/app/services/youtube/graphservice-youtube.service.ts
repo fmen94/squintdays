@@ -8,6 +8,8 @@ import { investment } from "../../querys/Youtube/investment"
 import { affinity } from "../../querys/Youtube/affinity"
 import { content } from "../../querys/Youtube/content"
 import { general } from '../../querys/Youtube/general';
+import { postdetail } from 'src/app/querys/Youtube/postDetail';
+import { varios } from 'src/app/querys/Youtube/varios';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,13 @@ export class GraphserviceYoutubeService {
         result[2].data.pulse.youtube.investmentReturn,
         result[3].data.pulse.youtube.affinity,
         result[4].data.pulse.youtube.content
-      ),result[5],result[4]]
+      ),result[5]]
    })
  }
+ getPostDetailService(limit,idyt){
+  return this.apollo.query({query: gql`${postdetail(limit)}`,context:{  headers: {"idyt": `${idyt}`} }})
+}
+getVariosService(limit,idyt){
+  return this.apollo.query({query: gql`${varios(limit)}`,context:{  headers: {"idyt": `${idyt}`} }})
+}
 }

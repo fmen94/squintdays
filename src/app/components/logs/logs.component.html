@@ -1,0 +1,87 @@
+<form>
+
+    <div class="form-row">
+      <div class="col">
+        <label for="inicio">Fecha Inicio</label>
+        <input type="date" class="form-control" id="inicio" name="start"
+         [(ngModel)]="start" (change)="getLogs()"
+       
+       >
+      </div>
+      <div class="col">
+        <label for="fin">Fecha Fin</label>
+        <input type="date" class="form-control" id="fin" name="trip-start"
+         [(ngModel)]="end" (change)="getLogs()"
+        min="2020-01-10" max="2020-12-31">
+      </div>
+      <div class="col">
+        <label for="server">Componente</label>
+        <select class="form-control" id="server" [(ngModel)]="component" name="component" (change)="getComponet()">
+          <option value=0 defaut>Todo</option>
+          <option value=1>ETL</option>
+          <option value=2>FB Extractor</option>
+          <option value=3>YT Extractor</option>
+          <option value=4>IG  Extractor</option>
+          <option value=5>St  Extractor</option>
+        </select>
+      </div>
+
+      
+      <div class="col">
+        <label for="type">Tipo de Log</label>
+        <select class="form-control" id="type" [(ngModel)]="type" name="limit" (change)="getLogs()">
+          <option value="info' , 'error" defaut>Todo</option>
+          <option value="info" >Info</option>
+          <option value="error">Error </option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="search">Buscar / Page_id</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Ingrese la palabra a buscar" [(ngModel)]="search" (change)="getLogs()" name="search" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="getLogs()">Buscar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-outline-dark centrate" [routerLink]="[ '/brands' ]">Mostrar Marcas</button>
+      </div>
+    </div>
+    
+  </form>
+  <nav aria-label="..." style="margin-left: 5%;" *ngIf="logs">
+    <ul class="pagination">
+      <li class="page-item " [ngClass]="{'disabled': page==1   }" (click)="changePage(-1)" >
+        <span class="page-link" ><<</span>
+      </li>
+      <li class="page-item"><a class="page-link" >{{page}}</a></li>
+      <li class="page-item" (click)="changePage(1)" [ngClass]="{'disabled': page==this.logs[this.logs.length-1].page}" >
+        <span class="page-link" >>></span>
+      </li>
+    </ul>
+  </nav>
+  <div class="withtable" *ngIf="logs">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Component</th>
+        <th scope="col">Proceso</th>
+        <th scope="col">Tipo de log</th>
+        <th scope="col">Mensaje</th>
+      </tr>
+    </thead>
+    <tbody>
+     <tr *ngFor="let log of logs" >
+       
+        <th scope="row" *ngIf="log.page==page" >{{log.event_date | date: "mediumDate" }}</th>
+        <td *ngIf="log.page==page" >{{log.component}}</td>
+        <td *ngIf="log.page==page" >{{log.process_name}}</td>
+        <td [ngClass]="{'red': log.event_type=='ERROR' }" *ngIf="log.page==page" >{{log.event_type}}</td>
+        <td  class="text" *ngIf="log.page==page">{{log.event_message}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<img *ngIf="!logs" class="load" src="../assets/load.gif" alt="" style="width: 40rem;" >

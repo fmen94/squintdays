@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { common } from '../../querys/Facebook/common';
 import { community } from '../../querys/Facebook/community';
 import { affinity } from '../../querys/Facebook/affinty';
-import { content } from '../../querys/Facebook/content';
+import { varios } from '../../querys/Facebook/varios';
 import { investment } from '../../querys/Facebook/investmet';
 import { conversation } from '../../querys/Facebook/conversation';
 import { HttpLink } from "apollo-angular-link-http";
@@ -14,7 +14,7 @@ import { locationQuery } from '../../querys/Facebook/location';
 import { user } from 'src/app/querys/Facebook/users';
 import {Http} from '@angular/http'
 import { forkJoin } from 'rxjs';
-
+import { postdetail} from '../../querys/Facebook/postdeatail'
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,12 @@ export class GraphServiceFace {
 //       ),result[6],result[5]]
 //    })
 //  }
+getVariosService(limit,idFace){
+  return this.apollo.query({query: gql`${varios(limit)}`,context:{  headers: {"idface": `${idFace}`} }})
+}
+getPostDetailService(limit,idFace){
+  return this.apollo.query({query: gql`${postdetail(limit)}`,context:{  headers: {"idface": `${idFace}`} }})
+}
  getData(limit,period,idFace){
   return forkJoin(
     this.apollo.query({query: gql`${common(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
@@ -52,7 +58,6 @@ export class GraphServiceFace {
     this.apollo.query({query: gql`${investment(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
     this.apollo.query({query: gql`${affinity(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
     this.apollo.query({query: gql`${conversation(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
-    this.apollo.query({query: gql`${content(limit,period)}`,context:{  headers: {"idface": `${idFace}`} }}),
     this.apollo.query({query: gql`${general()}`,context:{  headers: {"idface": `${idFace}`} }})
   )
 }
@@ -61,9 +66,8 @@ transformSuscription(result){
     result[1].data.pulse.facebook.community,
     result[2].data.pulse.facebook.investmentReturn,
     result[3].data.pulse.facebook.affinity,
-    result[4].data.pulse.facebook.conversation,
-    result[5].data.pulse.facebook.content
-    ),result[6],result[5]]
+    result[4].data.pulse.facebook.conversation
+    ),result[5]]
 }
  getLocation(period,idFace,location,socialNetwork){
   if(socialNetwork=='FB'){socialNetwork="facebook"}

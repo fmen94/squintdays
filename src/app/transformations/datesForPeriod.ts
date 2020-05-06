@@ -4,7 +4,7 @@ export const datesForPeriod =(period,limit)=>{
  limit= limit-1
     let end 
     let start
-    let days: any[] = ["Contador"]
+    let days: any[] = ["Variable"]
     if(period == 'DL'){
         end = moment().format("MM/DD/YYYY")
         start = moment().subtract(limit,'days')

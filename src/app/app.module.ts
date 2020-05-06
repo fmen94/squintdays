@@ -2,9 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+//router
+import {routes} from './routes'
+import { RouterModule } from "@angular/router";
+//componets
+import { AppComponent } from './app.component';
+import { BradsComponent } from './components/brads/brads.component'
+import { LogsComponent } from './components/logs/logs.component'
+
 import {HttpModule} from '@angular/http'
 import { ApolloModule, APOLLO_OPTIONS } from "apollo-angular";
 import { HttpLinkModule, HttpLink } from "apollo-angular-link-http";
@@ -22,9 +30,12 @@ const authLink = setContext((_, { headers }) => {
 });
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BradsComponent,
+    LogsComponent,
   ],
   imports: [
+    RouterModule.forRoot(routes),
     HttpModule,
     FormsModule,
     BrowserModule,

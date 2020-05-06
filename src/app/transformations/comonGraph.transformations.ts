@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { datesForPeriod } from './datesForPeriod';
 
 
-export const transGraph = (data, limit = 7, period = "DL") => {
+export const transGraph =   (data, limit = 7, period = "DL") => {
 
     let result: any = []
     let days = datesForPeriod(period, limit)
@@ -29,8 +29,8 @@ export const transGraph = (data, limit = 7, period = "DL") => {
 function value(index) {
     if (index == undefined) { return null }
     if (index.value != undefined) { return index.value }
-    else if (index.media != undefined && index.media.value) {
-        index.media.value.length<15? index.url=`https://www.youtube.com/embed/${index.media.value}`:null  
+    else if (index.media != undefined && index.date != undefined    ) {  
+        index.media.kind!=null && index.media.value.length<15? index.url=`https://www.youtube.com/embed/${index.media.value}`:null  
         return index }
     else if (index.good != undefined) { return (index.good + index.bad + index.neutral) }
 }

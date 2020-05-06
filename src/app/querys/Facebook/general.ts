@@ -12,6 +12,10 @@ query {
           kind
           value
         }
+        cover{
+          kind
+          value
+        }
       }
     }
   }
