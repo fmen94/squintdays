@@ -4,8 +4,7 @@ import gql from 'graphql-tag';
 
 import { content } from '../../querys/news/content';
 import { HttpLink } from "apollo-angular-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { locationQuery } from '../../querys/Facebook/location';
+import { keywords } from "../../querys/news/keywords";
 
 import {Http} from '@angular/http'
 import { forkJoin } from 'rxjs';
@@ -42,18 +41,22 @@ export class GraphServiceNews {
 //  }
  getData(idnews){
   return forkJoin(
-    this.apollo.query({query: gql`${content()}`,context:{  headers: {"idnews": `${idnews}`} }})
+    this.apollo.query({query: gql`${content()}`,context:{  headers: {"idnews": `${idnews}`} }}),
+    this.apollo.query({query: gql`${keywords()}`,context:{  headers: {"idnews": `${idnews}`} }})
   )
 }
 transformSuscription(result){
-  let res = result[0].data.pulse.news.post.map(e=>{
-    return{
-      date:e.date,
-      text: e.post_text,
-      media: e.note_image
-    }
-  })
-  return [ Object.assign( {post:res}),null,res]
+  let res = []
+   res.push(result[1].data.audit.news.keywords)
+   res.push(result[0].data.pulse.news.post.map(e=>{
+      e.media=e.note_image
+      e.text=e.post_text
+      e.title=e.note_title
+      e.type= e.note_section
+      return e
+    })
+  )
+  return res
 }
 
 }

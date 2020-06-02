@@ -1,5 +1,7 @@
-import { varios } from 'src/app/querys/Youtube/varios';
+import { keywords } from './../../querys/news/keywords';
+
 import { postDetailTrans } from './../../transformations/postDetail';
+import { postDetailTransAp } from './../../transformations/postDetailApps';
 import { Component, OnInit } from '@angular/core';
 import { transGraph } from '../../transformations/comonGraph.transformations';
 import * as Chart from 'chart.js'
@@ -41,7 +43,8 @@ varios: any;
 DataCalc: any=[];
 general: any;
 post: any;
-postDetail: any
+postDetail: any=[]
+keywords : any=[];
 //Teble
 objectKeys = Object.keys;
 
@@ -51,6 +54,7 @@ benchDataActyaly: number ;
 benchDataProm: number ;
 
 //validations
+newCanal=false
 isCommon =true
 activeButun='general'
 loading= false
@@ -118,7 +122,6 @@ myChart:any
     this.loading= true
     this.clearData(true)
     this.activeButun= location
-    this.Data=null
     this.graphYt.getVariosService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.varios = e
@@ -130,7 +133,6 @@ myChart:any
     this.loading= true
     this.clearData(true)
     this.activeButun= location
-    this.Data=null
     this.graphService.getVariosService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.varios = e
@@ -139,13 +141,23 @@ myChart:any
   postDetailControler(location){
     if(this.chanel=="FB"){this.getPostDetail(location)}
     else if(this.chanel=="YT"){this.getPostDetailYt(location)}
+    else if(this.chanel=="AP"){this.getPostDetailAp(location)}
+  }
+  getPostDetailAp(location){
+    this.postDetail=null
+    this.loading= true
+    this.clearData(true)
+    this.activeButun= location
+    this.appsService.getPostDetailService(this.page_id).subscribe((e:any  )=>{
+      this.loading= false
+      this.postDetail= postDetailTransAp(e.data.pulse.apps.general.generalInfo)
+    })
   }
   getPostDetailYt(location){
     this.postDetail=null
     this.loading= true
     this.clearData(true)
     this.activeButun= location
-    this.Data=null
     this.graphYt.getPostDetailService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.postDetail= postDetailTrans(e.data.pulse.youtube.content.postDetail,this.limit,this.period)
@@ -156,7 +168,6 @@ myChart:any
     this.loading= true
     this.clearData(true)
     this.activeButun= location
-    this.Data=null
     this.graphService.getPostDetailService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.postDetail= postDetailTrans(e.data.pulse.facebook.content.postDetail,this.limit,this.period)
@@ -175,16 +186,14 @@ myChart:any
     })
   }
   trasnsfomDataNews(){
-    this.activeButun= "general"
+    this.activeButun= "post"
     this.clearData()
     this.graphServiceNews.getData(this.page_id)
     .subscribe(e=>{
-      e=this.graphServiceNews.transformSuscription(e)
+      let dat= this.graphServiceNews.transformSuscription(e)
+      this.keywords= dat[0]
+      this.postDetail= postDetailTrans(dat[1],this.limit,this.period)
       this.loading= false
-      this.Data = transGraph(e[0],this.limit,this.period)
-      this.days= this.Data.shift() 
-      this.post = this.Data.pop()  
-      this.general= null
     }).closed
     
   }
@@ -286,8 +295,10 @@ myChart:any
     this.graphService.renovateConection()
     this.getChanel()
   }
-  clearData(general= false){
-    this.loading= true
+  clearData(general= false,load=true){
+    this.keywords=[]
+    this.postDetail=[]
+    this.loading= load
     this.DataCalc=[]
     this.Data=[]
     this.post=[]
@@ -300,9 +311,19 @@ myChart:any
   }
   async getUsers(first=false){
     await this.graphService.getUsers(this.chanel).then(e=>{
+      this.clearData(false,false)
       this.users =e.data.audit.facebook.users
       !first? this.page_id = null :null
     })
+  }
+  validateOrigin(elem){
+    if(elem=="Fans"||elem=="Sentiment"||elem=="Comments"||elem=="Shares"){
+      return true
+    }
+    else if(elem=="CampaignFrequency"||elem=="CampaignReach"||elem=="CampaignCtr"||elem=="Investment"){
+      return "red"
+    }
+    else return false
   }
   getDefault(index,elem){
     if(   this.Data[index][0]==elem){return elem}

@@ -9,10 +9,18 @@ query{
   pulse{
     news{
       post(limit:50,dateStartEnd:{start: "${start}", end:"${end}"}){
+        source
+        source_image{
+          kind
+          value
+        }
         note_image{
           kind
           value
         }
+        note_title
+        author
+        note_section
         post_text
         date
       }

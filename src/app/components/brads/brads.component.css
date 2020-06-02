@@ -16,6 +16,9 @@ form{
     padding-top: 1% ;
     padding-bottom: 1%;
 }
+.green{
+    color: green;
+}
 .load{
     display:block;
     margin:auto;

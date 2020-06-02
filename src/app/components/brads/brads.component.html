@@ -1,215 +1,255 @@
 <form>
 
-    <div class="form-row">
-      <div class="col">
-        <label for="inputchanel">Red</label>
-        <select class="form-control" id="inputchanel" (change)="getUsers()" [(ngModel)]="chanel" name="chanel">
-          <option value="FB">Facebook</option>
-          <option value="IG">Instagram</option>
-          <option value="YT">Youtube</option>
-          <option value="ST">Sites</option>
-          <option value="AP">Apps</option>
-          <option value="NW">News</option>
-        </select>
-      </div>
-      <div class="col">
-        <label for="inputCanal">Página</label>
-        <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="page_id" name="page_id">
-          <option *ngFor="let e of users" [value]="e.kind">{{e.name || e.value}}</option>
-        </select>
-      </div>
-      
-      <div class="col">
-        <label for="inputEmail4">Columnas</label>
-        <select class="form-control" id="inputEmail4" [(ngModel)]="limit" name="limit" (change)="getChanel()">
-          <option *ngIf="period!= 'DL'" value=2>2</option>
-          <option *ngIf="period== 'MT'" value=6>6</option>
-          <option *ngIf="period== 'MT'" value=12>12</option>
-          <option *ngIf="period== 'DL'" value=8>8</option>
-          <option *ngIf="period== 'DL'" value=15>15</option>
-          <option *ngIf="period== 'DL'" value=31>31</option>
-          <option *ngIf="period== 'DL'" value=100>100</option>
-        </select>
-      </div>
-
-      <div class="col">
-        <button type="button" class="btn btn-outline-dark centrate" [routerLink]="[ '/logs' ]">Mostrar logs</button>
-      </div>
-    </div>
-  </form>
- 
   <div class="form-row">
-    <div class="col" *ngIf="general">
-      <div class="card general" style="width: 12rem;">
-        <img *ngIf="chanel=='FB'" [src]="general.general.logo.value? general.general.cover.value : '../assets/SinNombre.png'" class="card-img-top" alt="...">
-        <img [src]="general.general.logo.value? general.general.logo.value : '../assets/SinNombre.png'" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{general.title || "Sin Título"}}</h5>
-          <p class="card-text">ID: {{ page_id }}</p>
-          <p class="card-text">Username: {{general.nick || "Sin Nick"}}</p>
-          <p class="card-text">Categoria: {{general.category}}</p>
-        </div>
-      </div>
-
+    <div class="col">
+      <label for="inputchanel">Red</label>
+      <select class="form-control" id="inputchanel" (change)="getUsers()" [(ngModel)]="chanel" name="chanel">
+        <option value="FB">Facebook</option>
+        <option value="IG">Instagram</option>
+        <option value="YT">Youtube</option>
+        <option value="ST">Sites</option>
+        <option value="AP">Apps</option>
+        <option value="NW">News</option>
+      </select>
     </div>
     <div class="col">
-      <canvas id="myChart" width="700" height="400"></canvas>
+      <label for="inputCanal">Página</label>
+      <select class="form-control" id="inputCanal" (change)="update()" [(ngModel)]="page_id" name="page_id">
+        <option *ngFor="let e of users" [value]="e.kind">{{e.name || e.value}}</option>
+      </select>
     </div>
-    <div class="col general">
-      <div class="card bench" style="width: 18rem;" *ngIf="benchData && limit==15">
-        <div class="card-body">
-          <h5 class="card-title">{{benchData}}% 1w vs 1w </h5>
-        </div>
-      </div>
-      <div class="card bench" style="width: 18rem;" *ngIf="benchDataActyaly && limit==15">
-        <div class="card-body">
-          <h5 class="card-title">{{benchDataActyaly}}% 1d vs 1d</h5>
-        </div>
-      </div>
-      <div class="card bench" style="width: 18rem;" *ngIf="benchDataProm && limit==15">
-        <div class="card-body">
-          <h5 class="card-title">{{benchDataProm}}% 1w/7 vs 1w/7</h5>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="btn-group botonsDesc" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-secondary" [ngClass]="{'active': activeButun=='general'}" (click)="trasnsfomData()" *ngIf="chanel" >General</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('country')" [ngClass]="{'active': activeButun=='country'}" *ngIf="chanel=='FB'||chanel=='IG'" >Country</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('city')" [ngClass]="{'active': activeButun=='city'}" *ngIf="chanel=='FB'||chanel=='IG'"  >City</button>
-    <button type="button" class="btn btn-secondary" (click)="getLocaton('gender')" [ngClass]="{'active': activeButun=='gender'}" *ngIf="chanel=='FB'||chanel=='IG'" >Gender Age</button>
-      <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')" [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='FB'" >Source</button>
-      <button type="button" class="btn btn-secondary" (click)="postDetailControler('post')" [ngClass]="{'active': activeButun=='post'}" *ngIf="chanel=='FB'||chanel=='YT'" >Post</button>
-      <button type="button" class="btn btn-secondary" (click)="variosController('varios')" [ngClass]="{'active': activeButun=='varios'}" *ngIf="chanel=='FB'||chanel=='YT'" >Varios</button>
+    <div class="col">
+      <label for="inputEmail4">Columnas</label>
+      <select class="form-control" id="inputEmail4" [(ngModel)]="limit" name="limit" (change)="getChanel()">
+        <option *ngIf="period!= 'DL'" value=2>2</option>
+        <option *ngIf="period== 'MT'" value=6>6</option>
+        <option *ngIf="period== 'MT'" value=12>12</option>
+        <option *ngIf="period== 'DL'" value=8>8</option>
+        <option *ngIf="period== 'DL'" value=15>15</option>
+        <option *ngIf="period== 'DL'" value=31>31</option>
+        <option *ngIf="period== 'DL'" value=100>100</option>
+      </select>
+    </div>
+
+    <div class="col">
+      <button type="button" class="btn btn-outline-dark centrate" [routerLink]="[ '/logs' ]">Mostrar logs</button>
+    </div>
   </div>
-    <div class="withtable bench">
-      <table class="table table-hover dropTable" *ngIf="Data">
-        <thead class="thead-dark ">
-          <tr>
-            <th scope="col" *ngFor="let key of days">{{key}}</th>
-          </tr>
-        </thead>
+</form>
+<div  *ngIf="keywords.length>0"  style="text-align: center;" >
+  <h5 >Keywords: </h5>
+  <li *ngFor="let item of keywords">{{item}}</li>
+</div>
+<div class="form-row">
+  <div class="col" *ngIf="general">
+    <div class="card general" style="width: 12rem;">
+      <img *ngIf="chanel=='FB'"
+        [src]="general.general.logo.value? general.general.cover.value : '../assets/SinNombre.png'" class="card-img-top"
+        alt="...">
+      <img [src]="general.general.logo.value? general.general.logo.value : '../assets/SinNombre.png'"
+        class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{general.title || "Sin Título"}}</h5>
+        <p class="card-text">ID: {{ page_id }}</p>
+        <p class="card-text">Username: {{general.nick || "Sin Nick"}}</p>
+        <p class="card-text">Categoria: {{general.category}}</p>
+      </div>
+    </div>
+<!-- <h1 *ngIf="newCanal" >Selecciona una Página</h1> -->
+
+  </div>
+  <div class="col">
+    <canvas *ngIf="chanel!='NW'" id="myChart" width="700" height="400"></canvas>
+  </div>
+  <div class="col general">
+    <div class="card bench" style="width: 18rem;" *ngIf="benchData && limit==15">
+      <div class="card-body">
+        <h5 class="card-title">{{benchData}}% 1w vs 1w </h5>
+      </div>
+    </div>
+    <div class="card bench" style="width: 18rem;" *ngIf="benchDataActyaly && limit==15">
+      <div class="card-body">
+        <h5 class="card-title">{{benchDataActyaly}}% 1d vs 1d</h5>
+      </div>
+    </div>
+    <div class="card bench" style="width: 18rem;" *ngIf="benchDataProm && limit==15">
+      <div class="card-body">
+        <h5 class="card-title">{{benchDataProm}}% 1w/7 vs 1w/7</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-group botonsDesc" role="group" aria-label="Basic example">
+  <button type="button" class="btn btn-secondary" [ngClass]="{'active': activeButun=='general'}"
+    (click)="getChanel()" *ngIf="chanel&&chanel!='NW'">General</button>
+  <button type="button" class="btn btn-secondary" (click)="getLocaton('country')"
+    [ngClass]="{'active': activeButun=='country'}" *ngIf="chanel=='FB'||chanel=='IG'">Country</button>
+  <button type="button" class="btn btn-secondary" (click)="getLocaton('city')"
+    [ngClass]="{'active': activeButun=='city'}" *ngIf="chanel=='FB'||chanel=='IG'">City</button>
+  <button type="button" class="btn btn-secondary" (click)="getLocaton('gender')"
+    [ngClass]="{'active': activeButun=='gender'}" *ngIf="chanel=='FB'||chanel=='IG'">Gender Age</button>
+  <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')"
+    [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='FB'">Source</button>
+  <button type="button" class="btn btn-secondary" (click)="postDetailControler('post')"
+    [ngClass]="{'active': activeButun=='post'}" *ngIf="chanel=='FB'||chanel=='YT'||chanel=='NW'||chanel=='AP'">Post</button>
+  <button type="button" class="btn btn-secondary" (click)="variosController('varios')"
+    [ngClass]="{'active': activeButun=='varios'}" *ngIf="chanel=='FB'||chanel=='YT'">Varios</button>
+</div>
+<div class="withtable bench">
+  <table class="table table-hover dropTable" *ngIf="Data.length>0">
+    <thead class="thead-dark ">
+      <tr>
+        <th scope="col" *ngFor="let key of days">{{key}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of Data; let i = index">
+        <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null||validateOrigin(e[key]) =='red','green': validateOrigin(e[key]) }">
+          {{getDefault(i,e[key])}}
+          <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
+        </td>
+      </tr>
+      <tr class="thead-dark">
+        <th scope="col" *ngFor="let key of days">{{key}}</th>
+      </tr>
+      <tr *ngFor="let e of DataCalc; let i = index">
+        <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null,'green': validateOrigin(e[key]) }">
+          {{getDefault(i,e[key])}}
+          <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
+        </td>
+      </tr>
+      <tr *ngIf="isCommon">
+        <td *ngFor="let e of post">
+          <div class="card" style="width: 15rem;" *ngIf="isPost(e)">
+            <iframe *ngIf="e.url" width="238" height="150" [src]="getFrime(e)" frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <img *ngIf="!e.url" [src]="e.media.value" class="card-img-top" alt="Sin imagen para mostrar">
+            <div class="card-body">
+              <p class="card-text">{{e.text}}</p>
+            </div>
+          </div>
+          <p *ngIf="!isPost(e)">{{ e }}</p>
+          <img *ngIf="!e" src="../assets/SinNombre.png" alt="" style="width: 12rem;">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<img *ngIf="loading" class="load" src="../assets/load.gif" alt="" style="width: 40rem;">
+
+
+
+<div style="width:90%; margin:5%;">
+  <h1 *ngIf="activeButun=='post'&&postDetail.length==0 && !loading">Sin post para mostrar</h1>
+ 
+  <div class="row row-cols-1 row-cols-md-3 " *ngIf="Data.length==0">
+    <div class="col mb-4 postDetail" *ngIf="varios && chanel=='FB'">
+      <h1>Vistas de video</h1>
+      <table class="table table-hover">
         <tbody>
-          <tr *ngFor="let e of Data; let i = index">
-            <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null }" >
-              {{getDefault(i,e[key])}}
-               <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
-            </td> 
+          <tr>
+            <th scope="row">10 segundos</th>
+            <td>{{varios.data.pulse.facebook.affinity.videoViews[0].value}}</td>
           </tr>
-          <tr  class="thead-dark">
-            <th scope="col" *ngFor="let key of days">{{key}}</th>
+          <tr>
+            <th scope="row">30 segundos</th>
+            <td>{{varios.data.pulse.facebook.affinity.videoViews[1].value}}</td>
           </tr>
-          <tr *ngFor="let e of DataCalc; let i = index">
-            <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null }" >
-              {{getDefault(i,e[key])}}
-               <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
-            </td> 
-          </tr>
-          <tr *ngIf="isCommon">
-            <td *ngFor="let e of post">
-                <div class="card" style="width: 15rem;" *ngIf="isPost(e)">
-                  <iframe *ngIf="e.url" width="238" height="150" [src]="getFrime(e)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <img *ngIf="!e.url" [src]="e.media.value" class="card-img-top" alt="Sin imagen para mostrar">
-                    <div class="card-body">
-                      <p class="card-text">{{e.text}}</p>
-                    </div>
-                  </div>
-                  <p *ngIf="!isPost(e)" >{{ e }}</p>
-                  <img *ngIf="!e" src="../assets/SinNombre.png" alt="" style="width: 12rem;" >
-            </td>
+          <tr>
+            <th scope="row">Completo</th>
+            <td>{{varios.data.pulse.facebook.affinity.videoViews[2].value}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <img *ngIf="loading" class="load" src="../assets/load.gif" alt="" style="width: 40rem;" >
+    <div class="col mb-4 postDetail" *ngIf="varios && chanel=='YT'">
+      <h1>Vistas Por dispositivo</h1>
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <th scope="row">Móvil</th>
+            <td>
+              {{varios.data.pulse.youtube.affinity.postType[0]? varios.data.pulse.youtube.affinity.postType[0].value : 0}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Tablet</th>
+            <td>
+              {{varios.data.pulse.youtube.affinity.postType[1]? varios.data.pulse.youtube.affinity.postType[1].value : 0}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Completo</th>
+            <td>
+              {{varios.data.pulse.youtube.affinity.postType[2]? varios.data.pulse.youtube.affinity.postType[2].value : 0}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Consola</th>
+            <td>
+              {{varios.data.pulse.youtube.affinity.postType[3]? varios.data.pulse.youtube.affinity.postType[3].value : 0}}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Desconocido</th>
+            <td>
+              {{varios.data.pulse.youtube.affinity.postType[4]? varios.data.pulse.youtube.affinity.postType[4].value : 0}}
+            </td>
+          </tr>
 
-
-
-    <div style="width:90%; margin:5%;">
-      <h1 *ngIf="activeButun=='post'&&postDetail.length>0">Sin post para mostrar</h1>
-    <div class="row row-cols-1 row-cols-md-3 " *ngIf="Data==null" >
-      <div class="col mb-4 postDetail" *ngIf="varios && chanel=='FB'">
-        <h1>Vistas de video</h1>
-        <table class="table table-hover">
-          <tbody>
-            <tr>
-              <th scope="row">10 segundos</th>
-              <td>{{varios.data.pulse.facebook.affinity.videoViews[0].value}}</td>
-            </tr>
-            <tr>
-              <th scope="row">30 segundos</th>
-              <td>{{varios.data.pulse.facebook.affinity.videoViews[1].value}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Completo</th>
-              <td>{{varios.data.pulse.facebook.affinity.videoViews[2].value}}</td>
-            </tr>
-          </tbody>
-        </table>
+        </tbody>
+      </table>
+    </div>
+    <div class=" mb-4 postDetail" *ngFor="let post of postDetail" style="flex-basis: 0;">
+      <iframe *ngIf="post.media.value!= null &&post.media.value!= ''&& post.media.value.length<12 " width="238" height="150"
+        [src]="getFrime(post)" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <img *ngIf="post.media.value!= null &&post.media.value!= ''&& post.media.value.length>12 " [src]="post.media.value" class="card-img-top"
+        alt="Sin imagen para mostrar " width="238px">
+      
+      <div class="card-body text-left">
+        <p class="card-text" *ngIf="post.title!=null">Title: {{post.title}}</p>
+        <p class="card-text" *ngIf="post.text !=null">{{post.text}}</p>
+        <p class="card-text" *ngIf="post.date!=null">Date: {{post.date}}</p>
+        <p class="card-text" *ngIf="post.source!=null">Source: {{post.source}}</p>
+        <p class="card-text" *ngIf="post.author!=null">Author: {{post.author}}</p>
+        <p class="card-text" *ngIf="post.reach!=null">Reach: {{post.reach}}</p>
+        <p class="card-text" *ngIf="post.engagementRate!=null">Engagement Rate: {{post.engagementRate}}</p>
+        <p class="card-text" *ngIf="post.engagedUsers!=null">Engaged Users: {{post.engagedUsers}}</p>
+        <p class="card-text" *ngIf="post.like!=null">Likes: {{post.like}}</p>
+        <p class="card-text" *ngIf="post.love!=null">Love: {{post.love}}</p>
+        <p class="card-text" *ngIf="post.wow!=null">Wow: {{post.wow}}</p>
+        <p class="card-text" *ngIf="post.haha!=null">Haha: {{post.haha}}</p>
+        <p class="card-text" *ngIf="post.sorry!=null">Sorry: {{post.sorry}}</p>
+        <p class="card-text" *ngIf="post.anger!=null">Anger: {{post.anger}}</p>
+        <p class="card-text" *ngIf="post.impressions!=null">Impressions: {{post.impressions}}</p>
+        <!-- <p class="card-text">Engagement: {{post.engagement}}</p> -->
+        <p class="card-text" *ngIf="post.views!=null">Viewers: {{post.views}}</p>
+        <p class="card-text" *ngIf="post.interactions!=null">Interactions: {{post.interactions}}</p>
+        <p class="card-text" *ngIf="post.shares!=null">Shares: {{post.shares}}</p>
+        <p class="card-text" *ngIf="post.reactions!=null">Reactions: {{post.reactions}}</p>
+        <p class="card-text" *ngIf="post.clicks!=null">Clicks: {{post.clicks}}</p>
+        <p class="card-text" *ngIf="post.comment!=null">Comments: {{post.comment}}</p>
+        <p class="card-text" *ngIf="post.affinity!=null">Affinity: {{post.affinity}}</p>
+        <p class="card-text" *ngIf="post.type!=null">Type: {{post.type}}</p>
+<!-- //YT -->
+        <p class="card-text" *ngIf="post.comments!=null">Comments: {{post.comments}}</p>
+        <p class="card-text" *ngIf="post.dislike!=null">Dislike: {{post.dislike}}</p>
+        <p class="card-text" *ngIf="post.likes!=null">Likes: {{post.likes}}</p>
+        <p class="card-text" *ngIf="post.time!=null">Time: {{post.time}}</p>
+        <p class="card-text" *ngIf="post.url!=null &&chanel=='YT'">Url: {{post.url}}</p>
+<!-- Apps -->
+        <p class="card-text" *ngIf="post.store!=null">Store: {{post.store}}</p>
+        <p class="card-text" *ngIf="post.votes!=null">Votes: {{post.votes}}</p>
+        <p class="card-text" *ngIf="post.rating!=null">Rating: {{post.rating}}</p>
+        <p class="card-text" *ngIf="post.clasification!=null">Clasification: {{post.clasification}}</p>
+        <p class="card-text" *ngIf="post.installation!=null">Installation: {{post.installation}}</p>
       </div>
-      <div class="col mb-4 postDetail" *ngIf="varios && chanel=='YT'">
-        <h1>Vistas Por dispositivo</h1>
-        <table class="table table-hover">
-          <tbody>
-            <tr>
-              <th scope="row">Móvil</th>
-              <td>{{varios.data.pulse.youtube.affinity.postType[0]? varios.data.pulse.youtube.affinity.postType[0].value : 0}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Tablet</th>
-              <td>{{varios.data.pulse.youtube.affinity.postType[1]? varios.data.pulse.youtube.affinity.postType[1].value : 0}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Completo</th>
-              <td>{{varios.data.pulse.youtube.affinity.postType[2]? varios.data.pulse.youtube.affinity.postType[2].value : 0}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Consola</th>
-              <td>{{varios.data.pulse.youtube.affinity.postType[3]? varios.data.pulse.youtube.affinity.postType[3].value : 0}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Desconocido</th>
-              <td>{{varios.data.pulse.youtube.affinity.postType[4]? varios.data.pulse.youtube.affinity.postType[4].value : 0}}</td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-  <div class=" mb-4 postDetail" *ngFor="let post of postDetail" style="flex-basis: 0;" >
-    <iframe *ngIf="post.media.value!= ''&& post.media.value.length<12 " width="238" height="150" [src]="getFrime(post)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  <img *ngIf="post.media.value!= ''&& post.media.value.length>12 "  [src]="post.media.value" class="card-img-top" alt="Sin imagen para mostrar " width="238" >
-    <div class="card-body text-left">
-      <p class="card-text" *ngIf="post.title!=null">Title: {{post.title}}</p>
-      <p class="card-text" *ngIf="post.text !=null" >{{post.text}}</p>
-       <p class="card-text"  *ngIf="post.date!=null" >Date: {{post.date}}</p>
-       <p class="card-text"  *ngIf="post.reach!=null">Reach: {{post.reach}}</p>
-        <p class="card-text"  *ngIf="post.engagementRate!=null" >Engagement Rate: {{post.engagementRate}}</p>
-         <p class="card-text"  *ngIf="post.engagedUsers!=null" >Engaged Users: {{post.engagedUsers}}</p> 
-         <p class="card-text"  *ngIf="post.like!=null" >Likes: {{post.like}}</p>
-         <p class="card-text"  *ngIf="post.love!=null"  >Love: {{post.love}}</p>
-         <p class="card-text" *ngIf="post.wow!=null" >Wow: {{post.wow}}</p>
-         <p class="card-text"  *ngIf="post.haha!=null" >Haha: {{post.haha}}</p>
-          <p class="card-text"  *ngIf="post.sorry!=null" >Sorry: {{post.sorry}}</p>
-         <p class="card-text"  *ngIf="post.anger!=null">Anger: {{post.anger}}</p>
-         <p class="card-text"  *ngIf="post.impressions!=null">Impressions: {{post.impressions}}</p>
-         <!-- <p class="card-text">Engagement: {{post.engagement}}</p> -->
-          <p class="card-text"  *ngIf="post.views!=null">Viewers: {{post.views}}</p>
-         <p class="card-text"  *ngIf="post.interactions!=null">Interactions: {{post.interactions}}</p>
-         <p class="card-text" *ngIf="post.shares!=null" >Shares: {{post.shares}}</p>
-         <p class="card-text" *ngIf="post.reactions!=null">Reactions: {{post.reactions}}</p>
-          <p class="card-text" *ngIf="post.clicks!=null">Clicks: {{post.clicks}}</p>
-         <p class="card-text" *ngIf="post.comment!=null">Comments: {{post.comment}}</p>
-         <p class="card-text" *ngIf="post.affinity!=null">Affinity: {{post.affinity}}</p>
-         <p class="card-text" *ngIf="post.type!=null">Type: {{post.type}}</p>
-
-         <p class="card-text" *ngIf="post.comments!=null">Comments: {{post.comments}}</p>
-         <p class="card-text" *ngIf="post.dislike!=null">Dislike: {{post.dislike}}</p>
-         <p class="card-text" *ngIf="post.likes!=null">Likes: {{post.likes}}</p>
-         <p class="card-text" *ngIf="post.time!=null">Time: {{post.time}}</p>
-         <p class="card-text" *ngIf="post.url!=null &&chanel=='YT'">Url: {{post.url}}</p>
     </div>
   </div>
 </div>
-</div>
-<p *ngIf="Data" class="card-text postDetail">Token: EAAKoAQhf3dUBAIJQyxA6FmQr8YvyeUDO1WjUGuZAfqQ9ZCZCakDsqRHONcyfcozdsIFIP5n7BQAllZA2dXgZBfTDQhdx4S7pdkHuB3OdIp7DiYAqfkWEy3FtpyAp4s8ReGW9STxmbBX5MibShtNts7nmM5U4Ft9o7Gxh1dWeojgZDZD</p>
+<p *ngIf="Data.length>0" class="card-text postDetail">Token:
+  EAAKoAQhf3dUBAIJQyxA6FmQr8YvyeUDO1WjUGuZAfqQ9ZCZCakDsqRHONcyfcozdsIFIP5n7BQAllZA2dXgZBfTDQhdx4S7pdkHuB3OdIp7DiYAqfkWEy3FtpyAp4s8ReGW9STxmbBX5MibShtNts7nmM5U4Ft9o7Gxh1dWeojgZDZD
+</p>

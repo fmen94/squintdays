@@ -30,8 +30,7 @@ export class GraphserviceYoutubeService {
      return [ Object.assign( result[0].data.pulse.youtube.common,
         result[1].data.pulse.youtube.community,
         result[2].data.pulse.youtube.investmentReturn,
-        result[3].data.pulse.youtube.affinity,
-        result[4].data.pulse.youtube.content
+        result[3].data.pulse.youtube.affinity
       ),result[5]]
    })
  }

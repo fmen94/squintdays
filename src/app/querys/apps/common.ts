@@ -38,13 +38,6 @@ export const common =(limit=7,period="DL")=>{
                 value
               }
             }
-            keywords(limit:${limit} period: ${period}){
-              id
-              data{
-                date
-                value
-              }
-            }
           }
         }
       }

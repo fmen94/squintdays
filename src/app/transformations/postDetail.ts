@@ -11,5 +11,9 @@ export const postDetailTrans = (data, limit = 7, period = "DL") => {
             obj.push(e)
         }
         return obj
-    },[])
+    },[]).sort((a,b)=>{
+        if(a.date>b.date){return 1}
+        else if (a.date<b.date){return -1}
+        else if (a.date==b.date){return 0}
+    })
 }
