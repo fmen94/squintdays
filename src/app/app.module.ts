@@ -19,6 +19,8 @@ import { HttpLinkModule, HttpLink } from "apollo-angular-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { FormsModule } from '@angular/forms';
 import { setContext } from 'apollo-link-context';
+import { MomentModule } from 'ngx-moment';
+
 const authLink = setContext((_, { headers }) => {
   const idface = localStorage.getItem('idface');
   return {
@@ -41,7 +43,8 @@ const authLink = setContext((_, { headers }) => {
     BrowserModule,
     AppRoutingModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    MomentModule
   ],
   providers: [{
     provide: APOLLO_OPTIONS,
@@ -50,6 +53,7 @@ const authLink = setContext((_, { headers }) => {
         cache: new InMemoryCache(),
         link: authLink.concat(httpLink.create({
           uri: "https://graph.squintboard.com/"
+          //uri: "http://localhost:4000/"
         }))
       }
     },

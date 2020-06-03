@@ -83,12 +83,36 @@ else if(socialNetwork=='IG'){socialNetwork="instagram"}
     cache: new InMemoryCache(),
     link: this.httpLink.create({
       uri: "https://graph.squintboard.com/"
+      //uri: "http://localhost:4000/"
     })
   })
 }
 async getUsers(network){
   let users
   await this.apollo.query({query: gql`${user(network)}`}).toPromise()
+  .then(e=>{
+    users= e
+  })
+  return users
+}
+
+async getLifetime(idFace){
+  let users
+  await this.apollo.query({
+    query: gql`query{
+      audit{
+        facebook{
+          lifetime{
+            name
+            start
+            end
+            value
+          }
+        }
+      }
+    }`,
+    context:{  headers: {"idface": `${idFace}`} }
+  }).toPromise()
   .then(e=>{
     users= e
   })

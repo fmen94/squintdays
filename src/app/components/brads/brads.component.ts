@@ -45,6 +45,18 @@ general: any;
 post: any;
 postDetail: any=[]
 keywords : any=[];
+lifetime: Array<any> = [];
+lifeTimeTitles = {
+  page_posts: 'Publicaciones',
+  page_likes: 'Likes',
+  page_fans: 'Fans',
+  page_followers: 'Seguidores',
+  page_fans_organic: 'Fans Orgánicos',
+  page_fans_paid: 'Fans Pagados',
+  page_fans_impressions: 'Impresiones',
+  page_impressions_organic: 'Impresiones Orgánicas',
+  page_impressions_paid: 'Impresiones pagadas',
+}
 //Teble
 objectKeys = Object.keys;
 
@@ -136,6 +148,19 @@ myChart:any
     this.graphService.getVariosService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.varios = e
+    })
+  }
+  lifetimeController(location){
+    if(this.chanel=="FB"){this.getLifetime(location)}
+  }
+  getLifetime(location){
+    this.postDetail=null
+    this.loading= true
+    this.clearData(true)
+    this.activeButun= location;
+    this.graphService.getLifetime(this.page_id).then((e:any  )=>{
+      this.loading= false;
+      this.lifetime = e.data.audit.facebook.lifetime;
     })
   }
   postDetailControler(location){

@@ -96,6 +96,8 @@
     [ngClass]="{'active': activeButun=='post'}" *ngIf="chanel=='FB'||chanel=='YT'||chanel=='NW'||chanel=='AP'">Post</button>
   <button type="button" class="btn btn-secondary" (click)="variosController('varios')"
     [ngClass]="{'active': activeButun=='varios'}" *ngIf="chanel=='FB'||chanel=='YT'">Varios</button>
+  <button type="button" class="btn btn-secondary" (click)="lifetimeController('lifetime')"
+    [ngClass]="{'active': activeButun=='lifetime'}" *ngIf="chanel=='FB'">Históricos</button>
 </div>
 <div class="withtable bench">
   <table class="table table-hover dropTable" *ngIf="Data.length>0">
@@ -140,7 +142,29 @@
 <img *ngIf="loading" class="load" src="../assets/load.gif" alt="" style="width: 40rem;">
 
 
-
+<div *ngIf="activeButun=='lifetime'" style="width:90%; margin:5%;">
+  <div class="row row-cols-1 row-cols-md-3 ">
+    <div class="col mb-4 postDetail" *ngFor="let l of lifetime">
+      <h1>{{lifeTimeTitles[l.name]}}</h1>
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <th scope="row">Start</th>
+            <td>{{l.start | amDateFormat:'LL'}}</td>
+          </tr>
+          <tr>
+            <th scope="row">End</th>
+            <td>{{l.end | amDateFormat:'LL'}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Value</th>
+            <td>{{l.value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <div style="width:90%; margin:5%;">
   <h1 *ngIf="activeButun=='post'&&postDetail.length==0 && !loading">Sin post para mostrar</h1>
  
