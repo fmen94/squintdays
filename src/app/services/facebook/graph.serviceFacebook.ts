@@ -96,27 +96,50 @@ async getUsers(network){
   return users
 }
 
-async getLifetime(idFace){
-  let users
-  await this.apollo.query({
-    query: gql`query{
-      audit{
-        facebook{
-          lifetime{
-            name
-            start
-            end
-            value
+async getLifetime(net_id,channel){
+  let lifetime;
+  if(channel=='FB'){
+    await this.apollo.query({
+      query: gql`query{
+        audit{
+          facebook{
+            lifetime{
+              name
+              start
+              end
+              value
+            }
           }
         }
-      }
-    }`,
-    context:{  headers: {"idface": `${idFace}`} }
-  }).toPromise()
-  .then(e=>{
-    users= e
-  })
-  return users
+      }`,
+      context:{  headers: {"idface": `${net_id}`} }
+    }).toPromise()
+    .then(e=>{
+      lifetime= e
+    });
+  }
+  if(channel=='IG'){
+    await this.apollo.query({
+      query: gql`query{
+        audit{
+          instagram{
+            lifetime{
+              name
+              start
+              end
+              value
+            }
+          }
+        }
+      }`,
+      context:{  headers: {"profile_id": `${net_id}`} }
+    }).toPromise()
+    .then(e=>{
+      console.log(e);
+      lifetime= e
+    });
+  }
+  return lifetime
 }
 
 getTokeRef(code){

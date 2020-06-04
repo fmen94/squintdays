@@ -56,6 +56,10 @@ lifeTimeTitles = {
   page_fans_impressions: 'Impresiones',
   page_impressions_organic: 'Impresiones Orgánicas',
   page_impressions_paid: 'Impresiones pagadas',
+  media: 'Publicaciones',
+  profile_views: 'Vistas al perfil',
+  profile_impressions: 'Impresiones del perfil',
+  profile_reach: 'Alcance del perfil',
 }
 //Teble
 objectKeys = Object.keys;
@@ -151,16 +155,19 @@ myChart:any
     })
   }
   lifetimeController(location){
-    if(this.chanel=="FB"){this.getLifetime(location)}
+    this.getLifetime(location)
   }
   getLifetime(location){
     this.postDetail=null
     this.loading= true
     this.clearData(true)
     this.activeButun= location;
-    this.graphService.getLifetime(this.page_id).then((e:any  )=>{
+    this.graphService.getLifetime(this.page_id,this.chanel).then((e:any  )=>{
       this.loading= false;
-      this.lifetime = e.data.audit.facebook.lifetime;
+      if(this.chanel=='FB')
+        this.lifetime = e.data.audit.facebook.lifetime;
+      if(this.chanel=='IG')
+        this.lifetime = e.data.audit.instagram.lifetime;
     })
   }
   postDetailControler(location){
@@ -358,6 +365,10 @@ myChart:any
     }
     else if(elem=="CampaignFrequency"||elem=="CampaignReach"||elem=="CampaignCtr"||elem=="Investment"){
       return "red"
+    }else if(this.chanel=='IG'){
+      if(elem=='OrganicFans' || elem=='PaidFans'){
+        return 'yellow';
+      }
     }
     else return false
   }

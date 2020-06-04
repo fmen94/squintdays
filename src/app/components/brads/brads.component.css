@@ -19,6 +19,9 @@ form{
 .green{
     color: green;
 }
+.yellow{
+    color: yellow !important;
+}
 .load{
     display:block;
     margin:auto;

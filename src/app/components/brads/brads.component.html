@@ -97,7 +97,7 @@
   <button type="button" class="btn btn-secondary" (click)="variosController('varios')"
     [ngClass]="{'active': activeButun=='varios'}" *ngIf="chanel=='FB'||chanel=='YT'">Varios</button>
   <button type="button" class="btn btn-secondary" (click)="lifetimeController('lifetime')"
-    [ngClass]="{'active': activeButun=='lifetime'}" *ngIf="chanel=='FB'">Históricos</button>
+    [ngClass]="{'active': activeButun=='lifetime'}" *ngIf="chanel=='FB' || chanel=='IG'">Históricos</button>
 </div>
 <div class="withtable bench">
   <table class="table table-hover dropTable" *ngIf="Data.length>0">
@@ -108,7 +108,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let e of Data; let i = index">
-        <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null||validateOrigin(e[key]) =='red','green': validateOrigin(e[key]) }">
+        <td *ngFor="let key of objectKeys(e)" (click)="getChart(i)" [ngClass]="{'red': e[key]==null||validateOrigin(e[key]) =='red','green': validateOrigin(e[key]), 'yellow' : validateOrigin(e[key])=='yellow' }">
           {{getDefault(i,e[key])}}
           <!-- {{ e[key] != null ? e[key]  : 'Null' }}  -->
         </td>
