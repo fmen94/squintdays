@@ -167,6 +167,8 @@ myChart:any
     if(this.chanel=="FB"){this.getPostDetail(location)}
     else if(this.chanel=="YT"){this.getPostDetailYt(location)}
     else if(this.chanel=="AP"){this.getPostDetailAp(location)}
+    else if(this.chanel=="IG"){this.getPostDetailIg(location)}
+    
   }
   getPostDetailAp(location){
     this.postDetail=null
@@ -186,6 +188,16 @@ myChart:any
     this.graphYt.getPostDetailService(this.limit,this.page_id).subscribe((e:any  )=>{
       this.loading= false
       this.postDetail= postDetailTrans(e.data.pulse.youtube.content.postDetail,this.limit,this.period)
+    })
+  }
+  getPostDetailIg(location){
+    this.postDetail=null
+    this.loading= true
+    this.clearData(true)
+    this.activeButun= location
+    this.graphInsta.getPost(this.limit,this.brand.value).subscribe((e:any  )=>{
+      this.loading= false
+      this.postDetail= postDetailTrans(e.data.pulse.instagram.content.postDetail,this.limit,this.period)
     })
   }
   getPostDetail(location){
@@ -281,12 +293,11 @@ myChart:any
     this.activeButun= "general"
     this.clearData()
     this.graphInsta.getData(this.limit,this.period,this.brand.value)
-    .subscribe(e=>{
+    .subscribe((e:any)=>{
       e=this.graphInsta.transformSuscription(e)
      this.loading= false
      this.Data = transGraph(e[0],this.limit,this.period)
      this.days= this.Data.shift() 
-     this.post = this.Data.pop()
      this.general= e[1].data.pulse.instagram
      this.general.category = this.brand.category
      this.getChart()

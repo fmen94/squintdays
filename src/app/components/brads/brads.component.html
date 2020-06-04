@@ -93,7 +93,7 @@
   <button type="button" class="btn btn-secondary" (click)="getLocaton('sourse')"
     [ngClass]="{'active': activeButun=='sourse'}" *ngIf="chanel=='FB'">Source</button>
   <button type="button" class="btn btn-secondary" (click)="postDetailControler('post')"
-    [ngClass]="{'active': activeButun=='post'}" *ngIf="chanel=='FB'||chanel=='YT'||chanel=='NW'||chanel=='AP'">Post</button>
+    [ngClass]="{'active': activeButun=='post'}" *ngIf="chanel=='FB'||chanel=='YT'||chanel=='NW'||chanel=='AP'||chanel=='IG'">Post</button>
   <button type="button" class="btn btn-secondary" (click)="variosController('varios')"
     [ngClass]="{'active': activeButun=='varios'}" *ngIf="chanel=='FB'||chanel=='YT'">Varios</button>
   <button type="button" class="btn btn-secondary" (click)="lifetimeController('lifetime')"
@@ -270,6 +270,8 @@
         <p class="card-text" *ngIf="post.rating!=null">Rating: {{post.rating}}</p>
         <p class="card-text" *ngIf="post.clasification!=null">Clasification: {{post.clasification}}</p>
         <p class="card-text" *ngIf="post.installation!=null">Installation: {{post.installation}}</p>
+     <!-- ig -->
+        <p class="card-text" *ngIf="post.store!=null">Saves: {{post.saves}}</p>
       </div>
     </div>
   </div>

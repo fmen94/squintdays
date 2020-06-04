@@ -7,7 +7,7 @@ import { community } from "../../querys/Instagram/community"
 import { investment } from "../../querys/Instagram/investment"
 import { affinity } from "../../querys/Instagram/affinity"
 import { conversation } from "../../querys/Instagram/conversation"
-import { content } from "../../querys/Instagram/content"
+import { postDetail } from "../../querys/Instagram/postDetail"
 import { general } from '../../querys/Instagram/general';
 import { Observable,forkJoin } from 'rxjs';
 
@@ -45,7 +45,6 @@ export class GraphserviceInstagramService {
     this.apollo.query({query: gql`${investment(limit,period)}`,context:{  headers: {"idinsta": `${idinsta}`} }}),
     this.apollo.query({query: gql`${affinity(limit,period)}`,context:{  headers: {"idinsta": `${idinsta}`} }}),
     this.apollo.query({query: gql`${conversation(limit,period)}`,context:{  headers: {"idinsta": `${idinsta}`} }}),
-    this.apollo.query({query: gql`${content(limit,period)}`,context:{  headers: {"idinsta": `${idinsta}`} }}),
     this.apollo.query({query: gql`${general()}`,context:{  headers: {"idinsta": `${idinsta}`} }}),
   )
 }
@@ -55,7 +54,9 @@ transformSuscription(result){
     result[2].data.pulse.instagram.investmentReturn,
     result[3].data.pulse.instagram.affinity,
     result[4].data.pulse.instagram.conversation,
-    result[5].data.pulse.instagram.content
-  ),result[6],result[5]]
+  ),result[5]]
+}
+getPost(limit,idinsta){
+  return this.apollo.query({query: gql`${postDetail(limit)}`,context:{  headers: {"idinsta": `${idinsta}`} }})
 }
 }
